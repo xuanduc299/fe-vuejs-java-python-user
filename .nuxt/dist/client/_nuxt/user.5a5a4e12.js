@@ -1,0 +1,1 @@
+import{s as e}from"./cart.caca9891.js";import{d as o,J as r,a0 as t,P as n}from"./swiper-vue.a421f1cd.js";import"./entry.98dfd619.js";import"./FetchInstance.12311bd0.js";const _=o({__name:"user",setup(s){return r(()=>{e()}),(a,m)=>(n(),t("div",null," user view "))}});export{_ as default};

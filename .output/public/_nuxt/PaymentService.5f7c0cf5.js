@@ -1,0 +1,1 @@
+import{f as e}from"./FetchInstance.12311bd0.js";const c="/payment",o=t=>e.post(`${c}/dat-hang`,t),a=t=>e.get(`${c}/detail/${t}`),n=t=>$fetch("https://partner.viettelpost.vn/v2/order/getPriceAll",{method:"POST",body:t}),r={checkout:o,getDetailOrder:a,calcFeeShip:n};export{r as P};

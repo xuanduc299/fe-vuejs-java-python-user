@@ -1,0 +1,1 @@
+import{A as e}from"./Axios.d324b291.js";const r="/don-hang",i=(t,a=0,c=10)=>e.get(`${r}/lich-su-da-mua?trangThai=${t}&page=${a}&size=${c} `),o=t=>e.get(`${r}/chi-tiet/${t}`),s=t=>e.get(`${r}/public/tra-cuu?q=${t}`),$={lichSuMua:i,chiTietOrder:o,trackOrder:s};export{$ as o};
