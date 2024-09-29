@@ -33,7 +33,8 @@
       <div class="chat-input">
         <textarea placeholder="nhập tin nhắn của bạn ở đây..." spellcheck="false" required v-model="userInput"
           @keyup.enter.prevent="sendMessage"></textarea>
-        <span id="send-btn" class="material-symbols-rounded" @click="sendMessage">send</span>
+        <span id="send-btn" class="material-symbols-rounded" @click="sendMessage"><img style="width: 35px;height: 26px;"
+            src="https://cdn-icons-png.freepik.com/512/5582/5582878.png" /></span>
       </div>
     </div>
   </div>
