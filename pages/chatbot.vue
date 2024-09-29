@@ -32,7 +32,7 @@
       </ul>
       <div class="chat-input">
         <textarea placeholder="nhập tin nhắn của bạn ở đây..." spellcheck="false" required v-model="userInput"
-          @keyup.enter="sendMessage"></textarea>
+          @keyup.enter.prevent="sendMessage"></textarea>
         <span id="send-btn" class="material-symbols-rounded" @click="sendMessage">send</span>
       </div>
     </div>
@@ -59,7 +59,7 @@ export default {
       this.messages.push({ text: this.userInput, isUser: true });
 
       try {
-        const res = await fetch('https://api-chatbot-ojh8.onrender.com/', {
+        const res = await fetch('https://api-chatbot-ojh8.onrender.com/chatbot/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
