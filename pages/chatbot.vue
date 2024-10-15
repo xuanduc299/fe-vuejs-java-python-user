@@ -9,32 +9,44 @@
       <header>
         <div class="avatar">
           <div class="tpl-avatar">
-            <div class="tpl-avatar-status" style="border-color: rgb(255, 255, 255); background: rgb(105, 222, 64);">
-            </div>
+            <div class="tpl-avatar-status" style="border-color: rgb(255, 255, 255); background: rgb(105, 222, 64);"></div>
             <div class="tpl-avatar-image" style="background-color: rgb(255, 255, 255);">
-              <div data-status="loaded" data-cover="true" class="lazy-img"><!----> <img
-                  src="https://cdn.chatbot.com/widget/61f28451fdd7c5000728b4f9/2A8kicyF.png" alt=""
-                  class="lazy-img-loaded"></div>
+              <div data-status="loaded" data-cover="true" class="lazy-img">
+                <img src="https://cdn.chatbot.com/widget/61f28451fdd7c5000728b4f9/2A8kicyF.png" alt="" class="lazy-img-loaded">
+              </div>
             </div>
           </div>
         </div>
         <h2>ChatBot</h2>
-        <span class="close-btn material-symbols-outlined" @click="toggleChatbot"><img style="width: 35px;height: 26px;"
-            src="https://logowik.com/content/uploads/images/close1437.jpg" /></span>
+        <span class="close-btn material-symbols-outlined" @click="toggleChatbot">
+          <img style="width: 35px;height: 26px;" src="https://logowik.com/content/uploads/images/close1437.jpg" />
+        </span>
       </header>
       <ul class="chatbox">
         <li class="chat incoming" v-for="(msg, index) in messages" :key="index" :class="{ outgoing: msg.isUser }">
           <span class="material-symbols-outlined">
             <img class="w-full" src="/image/bot.png" />
           </span>
-          <p :class="{ error: msg.isError }">{{ msg.text }}</p>
+          <div v-if="!msg.products">
+            <p :class="{ error: msg.isError }">{{ msg.text }}</p>
+          </div>
+          <div v-else>
+            <p>{{ msg.text }}</p>
+            <ul class="product-list">
+              <li v-for="(product, idx) in msg.products" :key="idx" class="product-item">
+                <img v-if="product.image_url" :src="product.image_url" alt="product image" class="product-image"/>
+                <p class="product-name">{{ product.product_name }}</p>
+              </li>
+            </ul>
+          </div>
         </li>
       </ul>
       <div class="chat-input">
         <textarea placeholder="nhập tin nhắn của bạn ở đây..." spellcheck="false" required v-model="userInput"
           @keyup.enter.prevent="sendMessage"></textarea>
-        <span id="send-btn" class="material-symbols-rounded" @click="sendMessage"><img style="width: 35px;height: 26px;"
-            src="https://cdn-icons-png.freepik.com/512/5582/5582878.png" /></span>
+        <span id="send-btn" class="material-symbols-rounded" @click="sendMessage">
+          <img style="width: 35px;height: 26px;" src="https://cdn-icons-png.freepik.com/512/5582/5582878.png" />
+        </span>
       </div>
     </div>
   </div>
@@ -51,14 +63,15 @@ export default {
   },
   methods: {
     toggleChatbot() {
-      this.isChatbotVisible = !this.isChatbotVisible; // Đổi trạng thái hiển thị chatbot
+      this.isChatbotVisible = !this.isChatbotVisible;
     },
     async sendMessage() {
       if (!this.userInput) return; // Ngăn không cho gửi tin nhắn trống
 
       // Thêm tin nhắn của người dùng vào mảng
       this.messages.push({ text: this.userInput, isUser: true });
-
+      // http://127.0.0.1:5000/chatbot/
+      //https://api-chatbot-ojh8.onrender.com/chatbot/
       try {
         const res = await fetch('https://api-chatbot-ojh8.onrender.com/chatbot/', {
           method: 'POST',
@@ -74,11 +87,19 @@ export default {
 
         const data = await res.json();
 
-        // Thêm phản hồi từ bot vào mảng
-        this.messages.push({ text: data.response, isUser: false });
+        if (data.top_products && data.top_products.length > 0) {
+          // Nếu có danh sách sản phẩm
+          this.messages.push({
+            text: 'Các sản phẩm nổi bật :',
+            products: data.top_products,
+            isUser: false
+          });
+        } else {
+          // Nếu chỉ có phản hồi đơn giản
+          this.messages.push({ text: data.response, isUser: false });
+        }
 
-        // Xóa input sau khi gửi
-        this.userInput = '';
+        this.userInput = ''; // Xóa input sau khi gửi
 
         this.$nextTick(() => {
           const chatbox = this.$el.querySelector('.chatbox');
@@ -86,7 +107,6 @@ export default {
         });
       } catch (error) {
         console.error('Error:', error);
-        // Thêm tin nhắn lỗi
         this.messages.push({ text: 'An error occurred. Please try again.', isUser: false, isError: true });
       }
     }
@@ -362,5 +382,34 @@ header h2 {
   background: transparent !important;
   display: block;
   max-width: 100%;
+}
+
+.product-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.product-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  max-width: 300px; /* Giới hạn chiều rộng của khối sản phẩm */
+}
+
+.product-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+.product-name {
+  font-size: 16px;
+  color: #000;
 }
 </style>
