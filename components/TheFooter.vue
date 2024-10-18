@@ -5,7 +5,7 @@
     >
       <div class="grid lg:block justify-center text-center lg:text-left">
         <h2 class="text-2xl font-semibold w-[400px]">
-          Shop Giày Thể Thao HAUNV
+          Shop Giày Thể Thao NXD
         </h2>
         <p class="max-w-[300px] mt-[15px] grid gap-[10px]">
           <span>

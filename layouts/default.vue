@@ -9,10 +9,10 @@
         <slot />
       </div>
 
-      <a-tooltip>
+      <!-- <a-tooltip>
         <template #title>Về đầu trang</template>
         <a-back-top />
-      </a-tooltip>
+      </a-tooltip> -->
     </a-layout>
 
     <TheFooter />

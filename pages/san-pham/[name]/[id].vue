@@ -176,7 +176,7 @@
                     {{item?.binhLuan?.replace(/./g, '*')}}
                   </p>
                   <p class="m-0" v-else>
-                    item?.binhLuan
+                    {{ item?.binhLuan }}
                   </p>
                 </template>
                 <template #datetime>

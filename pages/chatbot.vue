@@ -22,7 +22,7 @@
           <img style="width: 35px;height: 26px;" src="https://logowik.com/content/uploads/images/close1437.jpg" />
         </span>
       </header>
-      <ul class="chatbox">
+      <!-- <ul class="chatbox">
         <li class="chat incoming" v-for="(msg, index) in messages" :key="index" :class="{ outgoing: msg.isUser }">
           <span class="material-symbols-outlined">
             <img class="w-full" src="/image/bot.png" />
@@ -40,7 +40,46 @@
             </ul>
           </div>
         </li>
-      </ul>
+      </ul> -->
+      <ul class="chatbox">
+  <li
+    class="chat-message"
+    v-for="(msg, index) in messages"
+    :key="index"
+    :class="msg.isUser ? 'outgoing' : 'incoming'"
+  >
+    <!-- Bot icon for incoming messages -->
+    <div v-if="!msg.isUser" class="chat-avatar">
+      <img class="avatar-icon" src="/image/bot.png" alt="Bot Icon" />
+    </div>
+
+    <div class="chat-content">
+      <div v-if="!msg.products">
+        <!-- Error or regular message -->
+        <p :class="{ error: msg.isError, 'bot-message': !msg.isUser, 'user-message': msg.isUser }">
+          {{ msg.text }}
+        </p>
+      </div>
+      <div v-else>
+        <!-- If products exist in the message -->
+        <p :class="msg.isUser ? 'user-message' : 'bot-message'">{{ msg.text }}</p>
+        <ul class="product-list">
+          <li v-for="(product, idx) in msg.products" :key="idx" class="product-item">
+            <img v-if="product.image_url" :src="product.image_url" alt="product image" class="product-image"/>
+            <p class="product-name">{{ product.product_name }}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </li>
+  <li class="options-container" v-if="showOptions">
+    <!-- Sửa lại để cập nhật userInput trước khi gửi tin nhắn -->
+    <button @click="userInput = 'Thiết kế giày'; sendMessage()">🛠 Thiết kế giày</button>
+    <button @click="userInput = 'Mục đích sử dụng'; sendMessage()">👉 Mục đích sử dụng</button>
+    <button @click="userInput = 'Thương hiệu'; sendMessage()">😊 Thương hiệu</button>
+    <button @click="userInput = 'Tôi có câu hỏi khác'; sendMessage()">👀 Tôi có câu hỏi khác...</button>
+  </li>
+</ul>
       <div class="chat-input">
         <textarea placeholder="nhập tin nhắn của bạn ở đây..." spellcheck="false" required v-model="userInput"
           @keyup.enter.prevent="sendMessage"></textarea>
@@ -58,7 +97,13 @@ export default {
     return {
       isChatbotVisible: false,
       userInput: '',
-      messages: []
+      messages: [{
+          isUser: false,
+          text: "Chào bạn! 👋 tôi có thể giúp gì cho bạn!",
+          isError: false,
+        },
+       ],
+        showOptions: true, 
     };
   },
   methods: {
@@ -73,7 +118,7 @@ export default {
       // http://127.0.0.1:5000/chatbot/
       //https://api-chatbot-ojh8.onrender.com/chatbot/
       try {
-        const res = await fetch('https://api-chatbot-ojh8.onrender.com/chatbot/', {
+        const res = await fetch('http://127.0.0.1:5000/chatbot/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -86,7 +131,8 @@ export default {
         }
 
         const data = await res.json();
-
+        console.log("aaa",data);
+        
         if (data.top_products && data.top_products.length > 0) {
           // Nếu có danh sách sản phẩm
           this.messages.push({
@@ -94,9 +140,19 @@ export default {
             products: data.top_products,
             isUser: false
           });
+          this.showOptions = false;
+        } else if (data.select_products && data.select_products.length > 0) {
+          // Nếu có danh sách sản phẩm
+          this.messages.push({
+            text: 'Tên và hình ảnh của sản phẩm:',
+            products: data.select_products,
+            isUser: false
+          });
+          this.showOptions = false;
         } else {
           // Nếu chỉ có phản hồi đơn giản
           this.messages.push({ text: data.response, isUser: false });
+          this.showOptions = false;
         }
 
         this.userInput = ''; // Xóa input sau khi gửi
@@ -217,7 +273,7 @@ header h2 {
   border-radius: 25px;
 }
 
-.chatbox .chat {
+/* .chatbox .chat {
   display: flex;
   list-style: none;
 }
@@ -262,6 +318,95 @@ header h2 {
 .chatbox .incoming p {
   color: #000;
   background: #f2f2f2;
+} */
+.chatbox {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.chat-message {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.incoming {
+  flex-direction: row;
+}
+
+.outgoing {
+  flex-direction: row-reverse;
+}
+
+.chat-avatar {
+  margin-right: 10px;
+}
+
+.avatar-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.chat-content {
+  max-width: 70%;
+}
+
+.bot-message {
+  background-color: #4a90e2; /* Blue color for bot */
+  color: white;
+  padding: 10px;
+  border-radius: 15px;
+  border-bottom-left-radius: 0;
+}
+
+.user-message {
+  background-color: #f1f1f1; /* Light gray for user */
+  color: #000;
+  padding: 10px;
+  border-radius: 15px;
+  border-bottom-right-radius: 0;
+  word-wrap: break-word;
+}
+
+.options-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+button {
+  background-color: #e7f3ff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+button:hover {
+  background-color: #d0e8ff;
+}
+
+.product-list {
+  padding-left: 20px;
+}
+
+.product-item {
+  margin-bottom: 10px;
+}
+
+.product-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.error {
+  color: red;
 }
 
 .chatbot .chat-input {
