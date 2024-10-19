@@ -115,6 +115,9 @@ export default {
 
       // Thêm tin nhắn của người dùng vào mảng
       this.messages.push({ text: this.userInput, isUser: true });
+      // Thêm tin nhắn "..." để hiển thị trước
+      const loadingMessage = { text: '...', isUser: false };
+      this.messages.push(loadingMessage);
       // http://127.0.0.1:5000/chatbot/
       //https://api-chatbot-ojh8.onrender.com/chatbot/
       try {
@@ -132,39 +135,60 @@ export default {
 
         const data = await res.json();
         console.log("aaa",data);
-        
-        if (data.top_products && data.top_products.length > 0) {
-          // Nếu có danh sách sản phẩm
-          this.messages.push({
-            text: 'Các sản phẩm nổi bật :',
-            products: data.top_products,
-            isUser: false
-          });
-          this.showOptions = false;
-        } else if (data.select_products && data.select_products.length > 0) {
-          // Nếu có danh sách sản phẩm
-          this.messages.push({
-            text: 'Tên và hình ảnh của sản phẩm:',
-            products: data.select_products,
-            isUser: false
-          });
-          this.showOptions = false;
-        } else {
-          // Nếu chỉ có phản hồi đơn giản
-          this.messages.push({ text: data.response, isUser: false });
-          this.showOptions = false;
-        }
+        setTimeout(() => {
+        // Xóa tin nhắn "..." sau khi nhận phản hồi
+          this.messages.splice(this.messages.indexOf(loadingMessage), 1);
 
-        this.userInput = ''; // Xóa input sau khi gửi
+          if (data.top_products && data.top_products.length > 0) {
+            // Nếu có danh sách sản phẩm
+            this.messages.push({
+              text: 'Các sản phẩm nổi bật :',
+              products: data.top_products,
+              isUser: false
+            });
+            this.showOptions = false;
+          } else if (data.select_products && data.select_products.length > 0) {
+            // Nếu có danh sách sản phẩm
+            this.messages.push({
+              text: 'Tên và hình ảnh của sản phẩm:',
+              products: data.select_products,
+              isUser: false
+            });
+            this.showOptions = false;
+          } else if (data.top_nike_products && data.top_nike_products.length > 0) {
+            // Nếu có danh sách sản phẩm
+            this.messages.push({
+              text: 'Giày Nike được bán chạy là:',
+              products: data.top_nike_products,
+              isUser: false
+            });
+            this.showOptions = false;
+          } else if (data.top_adidas_products && data.top_adidas_products.length > 0) {
+            // Nếu có danh sách sản phẩm
+            this.messages.push({
+              text: 'Giày Adidas được bán chạy là:',
+              products: data.top_adidas_products,
+              isUser: false
+            });
+            this.showOptions = false;
+          } else{
+            // Nếu chỉ có phản hồi đơn giản
+            this.messages.push({ text: data.response, isUser: false });
+            this.showOptions = false;
+          }
 
-        this.$nextTick(() => {
-          const chatbox = this.$el.querySelector('.chatbox');
-          chatbox.scrollTop = chatbox.scrollHeight; // Cuộn xuống cuối
-        });
+          this.userInput = ''; // Xóa input sau khi gửi
+
+          this.$nextTick(() => {
+            const chatbox = this.$el.querySelector('.chatbox');
+            chatbox.scrollTop = chatbox.scrollHeight; // Cuộn xuống cuối
+          });
+        }, 1200);
       } catch (error) {
         console.error('Error:', error);
         this.messages.push({ text: 'An error occurred. Please try again.', isUser: false, isError: true });
       }
+      this.userInput = ''; 
     }
   }
 };
