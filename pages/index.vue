@@ -19,11 +19,11 @@
         </SwiperSlide>
 
         <SwiperSlide>
-          <img src="/image/banner/banner1.jpg" />
+          <img src="/image/banner/banner4.png" />
         </SwiperSlide>
 
         <SwiperSlide>
-          <img src="/image/banner/banner.jpg" />
+          <img src="/image/banner/banner5.png" />
         </SwiperSlide>
       </Swiper>
     </section>
@@ -276,12 +276,11 @@
     </section>
 
   </div>
-  <chatbot></chatbot>
+  <!-- <chatbot></chatbot> -->
 </template>
 
 <script lang="ts" setup>
 import ProductService from "~/services/ProductService";
-import chatbot from "~/pages/chatbot.vue";
 
 const _formatVnCurrency = inject("formatVnCurrency", (p: number) => 0);
 

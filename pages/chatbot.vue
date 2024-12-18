@@ -65,8 +65,10 @@
         <p :class="msg.isUser ? 'user-message' : 'bot-message'">{{ msg.text }}</p>
         <ul class="product-list">
           <li v-for="(product, idx) in msg.products" :key="idx" class="product-item">
-            <img v-if="product.image_url" :src="product.image_url" alt="product image" class="product-image"/>
-            <p class="product-name">{{ product.product_name }}</p>
+            <router-link  :to="`/san-pham/${product?.slug}/${product?.product_id}`">
+              <img v-if="product.image_url" :src="product.image_url" alt="product image" class="product-image"/>
+              <p class="product-name">{{ product.product_name }}</p>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -202,13 +204,13 @@ export default {
   outline: none;
   border: none;
   height: 50px;
-  width: 50px;
+  width: 55px;
   display: flex;
   cursor: pointer;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #724ae8;
+  /* background: #724ae8; */
   transition: all 0.2s ease;
   z-index: 100;
 }
@@ -575,6 +577,7 @@ button:hover {
   object-fit: cover;
   margin-right: 10px;
   border-radius: 4px;
+  float: left;
 }
 
 .product-name {

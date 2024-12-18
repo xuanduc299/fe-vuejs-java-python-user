@@ -6,7 +6,11 @@
     <NuxtLoadingIndicator/>
     <NuxtPage/>
   </NuxtLayout>
+  <chatbot></chatbot>
 </template>
 
+
 <script setup>
+import chatbot from "~/pages/chatbot.vue";
 </script>
+

@@ -10,24 +10,23 @@
         <p class="max-w-[300px] mt-[15px] grid gap-[10px]">
           <span>
             Điện thoại:
-            <a href="tel:0584843998" class="hover:text-[#524FD5]">
-              0
+            <a href="tel:0979840906" class="hover:text-[#524FD5]">
+              0979840906
             </a>
           </span>
 
           <span>
             Email:
             <a
-              href="mailto:trungtam.gedu@gmail.com"
+              href="mailto:xuanduc511@gmail.com"
               class="hover:text-[#524FD5]"
             >
-              trungtam.gedu@gmail.com
+              xuanduc511@gmail.com
             </a>
           </span>
 
           <span>
-            Địa chỉ: Số 12N7 ngõ 40, đường Xuân La, P. Xuân La, Q.Tây Hồ, Tp. Hà
-            Nội
+            Địa chỉ: Số 112, Cụm 6,Tân Lập, Đan Phượng, Hà Nội, Việt Nam
           </span>
         </p>
       </div>
