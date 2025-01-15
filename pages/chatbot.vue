@@ -123,7 +123,8 @@ export default {
       // http://127.0.0.1:5000/chatbot/
       //https://api-chatbot-8167.onrender.com/chatbot/
       try {
-        const res = await fetch('https://api-chatbot-8167.onrender.com/chatbot/', {
+        const res = await fetch('http://127.0.0.1:5000/chatbot/', {
+        // const res = await fetch('https://api-chatbot-8167.onrender.com/chatbot/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
