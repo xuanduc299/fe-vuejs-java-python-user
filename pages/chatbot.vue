@@ -77,7 +77,7 @@
   <li class="options-container" v-if="showOptions">
     <!-- Sửa lại để cập nhật userInput trước khi gửi tin nhắn -->
     <button @click="userInput = 'Thiết kế giày'; sendMessage()">🛠 Thiết kế giày</button>
-    <button @click="userInput = 'Mục đích sử dụng'; sendMessage()">👉 Mục đích sử dụng</button>
+    <button @click="userInput = 'Sản phẩm nổi bật'; sendMessage()">👉 Sản phẩm nổi bật</button>
     <button @click="userInput = 'Thương hiệu'; sendMessage()">😊 Thương hiệu</button>
     <button @click="userInput = 'Tôi có câu hỏi khác'; sendMessage()">👀 Tôi có câu hỏi khác...</button>
   </li>
